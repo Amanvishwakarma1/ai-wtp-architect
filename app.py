@@ -1,75 +1,63 @@
 import gradio as gr
 import os
-import sys
-import time
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from core import build_3d_model, get_cad_code, extract_mld_from_prompt
+from core.generator import build_3d_model
 
 
-def prototype_pipeline(description, progress=gr.Progress()):
+# ===============================
+# Generate Function
+# ===============================
 
-    progress(0.2, desc="Analyzing requirements...")
-    time.sleep(0.3)
+def generate_model(user_prompt):
 
-    mld = extract_mld_from_prompt(description)
+    try:
+        # Build model
+        glb_path, stl_path = build_3d_model({}, user_prompt)
 
-    progress(0.4, desc=f"Generating CAD parameters for {mld} MLD plant...")
-    code = get_cad_code(description)
+        print("Generated GLB:", glb_path)
+        print("Generated STL:", stl_path)
+        print("GLB Exists:", os.path.exists(glb_path))
+        print("STL Exists:", os.path.exists(stl_path))
 
-    progress(0.7, desc="Building 3D model...")
-    glb_path, stl_path = build_3d_model(code, description)
+        if not os.path.exists(glb_path):
+            return None, None, "❌ GLB file not generated"
 
-    progress(1.0, desc="Completed!")
+        return glb_path, stl_path, "✅ Model Generated Successfully"
 
-    return glb_path, stl_path
+    except Exception as e:
+        print("ERROR:", str(e))
+        return None, None, f"❌ Error: {str(e)}"
 
 
-with gr.Blocks(title="AI-WTP Architect", theme=gr.themes.Soft()) as demo:
+# ===============================
+# Gradio UI
+# ===============================
 
-    gr.Markdown("""
-    # 🌊 AI-WTP Architect  
-    ### Hydraulic-Based 3D Water Treatment Plant Generator
-    """)
+with gr.Blocks() as demo:
 
-    with gr.Row():
+    gr.Markdown("## 🏗️ AI WTP Architect")
 
-        with gr.Column(scale=1):
-            input_text = gr.Textbox(
-                label="Engineering Requirements",
-                value="Create a complete 100 MLD water treatment plant",
-                lines=6
-            )
+    prompt_input = gr.Textbox(
+        label="Enter Plant Capacity (e.g. 100 MLD)",
+        placeholder="Example: 150 MLD WTP"
+    )
 
-            generate_btn = gr.Button("🚀 GENERATE 3D MODEL", variant="primary")
+    generate_btn = gr.Button("Generate")
 
-        with gr.Column(scale=1):
+    status = gr.Textbox(label="Status")
 
-            model_viewer = gr.Model3D(
-                label="🔍 Live 3D Preview",
-                interactive=True,
-                clear_color=[0.02, 0.02, 0.05, 1]
-            )
-
-            output_file = gr.File(label="⬇ Download STL")
+    model_output = gr.Model3D(label="3D Preview")
+    file_output = gr.File(label="Download STL")
 
     generate_btn.click(
-        fn=prototype_pipeline,
-        inputs=input_text,
-        outputs=[model_viewer, output_file]
+        fn=generate_model,
+        inputs=prompt_input,
+        outputs=[model_output, file_output, status]
     )
 
+
+# ===============================
+# Launch
+# ===============================
 
 if __name__ == "__main__":
-    os.makedirs("exports", exist_ok=True)
-
-    port = int(os.environ.get("PORT", 7860))
-
-    demo.launch(
-        server_name="0.0.0.0",
-        server_port=port,
-        share=False,   # IMPORTANT: disable share on Render
-        debug=False
-    )
-
+    demo.launch(server_name="0.0.0.0", server_port=7860)
