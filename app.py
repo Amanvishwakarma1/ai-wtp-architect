@@ -63,9 +63,13 @@ with gr.Blocks(title="AI-WTP Architect", theme=gr.themes.Soft()) as demo:
 
 if __name__ == "__main__":
     os.makedirs("exports", exist_ok=True)
+
+    port = int(os.environ.get("PORT", 7860))
+
     demo.launch(
         server_name="0.0.0.0",
-        server_port=7860,
-        share=True,
-        debug=True
+        server_port=port,
+        share=False,   # IMPORTANT: disable share on Render
+        debug=False
     )
+
