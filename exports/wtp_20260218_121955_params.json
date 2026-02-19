@@ -1,0 +1,58 @@
+{
+  "timestamp": "20260218_121955",
+  "prompt": "genrate 1 tank",
+  "parameters": {
+    "intake": {
+      "radius": 5.0,
+      "height": 8.0,
+      "x": 10.0
+    },
+    "clarifier": {
+      "radius": 12.0,
+      "height": 6.0,
+      "x": 55.0
+    },
+    "filter": {
+      "width": 8.0,
+      "depth": 8.0,
+      "height": 4.0,
+      "x": 95.0
+    },
+    "storage": {
+      "radius": 8.0,
+      "height": 10.0,
+      "x": 135.0
+    },
+    "pipes": [
+      {
+        "from": "intake",
+        "to": "clarifier",
+        "length": 35.0,
+        "radius": 2.5,
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      {
+        "from": "clarifier",
+        "to": "filter",
+        "length": 25.0,
+        "radius": 2.8,
+        "x": 55.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      {
+        "from": "filter",
+        "to": "storage",
+        "length": 20.0,
+        "radius": 3.0,
+        "x": 95.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    ]
+  },
+  "vertices": 260,
+  "triangles": 492
+}

@@ -1,0 +1,58 @@
+{
+  "timestamp": "20260218_114757",
+  "prompt": "50 MLD water treatment plant with visible pipes connecting intake to clarifier, clarifier to filters, and filters to storage. Make pipes thick and clearly visible.",
+  "parameters": {
+    "intake": {
+      "radius": 8.0,
+      "height": 12.0,
+      "x": 10.0
+    },
+    "clarifier": {
+      "radius": 15.0,
+      "height": 18.0,
+      "x": 55.0
+    },
+    "filter": {
+      "width": 20.0,
+      "depth": 12.0,
+      "height": 10.0,
+      "x": 95.0
+    },
+    "storage": {
+      "radius": 12.0,
+      "height": 20.0,
+      "x": 135.0
+    },
+    "pipes": [
+      {
+        "from": "intake",
+        "to": "clarifier",
+        "length": 45.0,
+        "radius": 2.5,
+        "x": 25.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      {
+        "from": "clarifier",
+        "to": "filter",
+        "length": 40.0,
+        "radius": 3.0,
+        "x": 70.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      {
+        "from": "filter",
+        "to": "storage",
+        "length": 40.0,
+        "radius": 2.0,
+        "x": 110.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    ]
+  },
+  "vertices": 260,
+  "triangles": 492
+}

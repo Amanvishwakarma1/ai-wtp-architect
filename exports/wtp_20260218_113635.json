@@ -1,0 +1,7 @@
+{
+  "timestamp": "20260218_113635",
+  "mld": 50,
+  "prompt": "# Simple test with explicit connections\ntest_prompt_1 = \"50 MLD water treatment plant with visible pipes connecting intake to clarifier, clarifier to filters, and filters to storage. Make pipes thick and clearly visible.\"\n\n# Detailed with specific pipe positions\ntest_prompt_2 = \"\"\"\n75 MLD plant with clear connections:\n- Intake at x=0 (cylinder radius 6, height 12)\n- Clarifier at x=40 (cylinder radius 15, height 18)\n- Filters at x=80 (box width 20, depth 15, height 10)\n- Storage at x=120 (cylinder radius 12, height 15)\nAdd three connecting pipes at height 5 with radius 2.5\n\"\"\"\n\n# Ultra-specific for guaranteed connections\ntest_prompt_3 = \"Create a 3D model with 4 units in a line at x=0,40,80,120 and 3 horizontal pipes connecting them at y=0,z=5 with radius 2\"",
+  "vertices": 164,
+  "triangles": 300
+}

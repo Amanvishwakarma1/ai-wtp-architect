@@ -1,0 +1,115 @@
+{
+  "type": "complete_small_wtp",
+  "description": "Complete 100 MLD water treatment plant",
+  "capacity_mld": 100,
+  "units": [
+    {
+      "name": "Intake Structure",
+      "shape": "cylinder",
+      "radius": 12.65,
+      "height": 25.3,
+      "x": 0,
+      "color": [
+        0.2,
+        0.4,
+        0.8
+      ]
+    },
+    {
+      "name": "Flash Mixer",
+      "shape": "cylinder",
+      "radius": 7.91,
+      "height": 12.65,
+      "x": 37.95,
+      "color": [
+        0.8,
+        0.4,
+        0.2
+      ]
+    },
+    {
+      "name": "Flocculator",
+      "shape": "box",
+      "width": 25.3,
+      "depth": 15.81,
+      "height": 12.65,
+      "x": 79.06,
+      "color": [
+        0.3,
+        0.7,
+        0.5
+      ]
+    },
+    {
+      "name": "Clarifier",
+      "shape": "cylinder",
+      "radius": 22.14,
+      "height": 18.97,
+      "x": 126.49,
+      "color": [
+        0.1,
+        0.5,
+        0.9
+      ]
+    },
+    {
+      "name": "Rapid Sand Filter",
+      "shape": "box",
+      "width": 22.14,
+      "depth": 15.81,
+      "height": 12.65,
+      "x": 173.93,
+      "color": [
+        0.4,
+        0.7,
+        0.3
+      ]
+    },
+    {
+      "name": "Clear Water Tank",
+      "shape": "cylinder",
+      "radius": 18.97,
+      "height": 22.14,
+      "x": 227.68,
+      "color": [
+        0.2,
+        0.6,
+        0.9
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": 0,
+      "to": 1,
+      "radius": 3.16,
+      "z": 9.49
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "radius": 3.16,
+      "z": 9.49
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "radius": 3.79,
+      "z": 9.49
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "radius": 3.79,
+      "z": 9.49
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "radius": 3.16,
+      "z": 9.49
+    }
+  ],
+  "generated": "2026-02-18T14:28:56.427373",
+  "prompt": "Create a complete 100 MLD water treatment plant"
+}

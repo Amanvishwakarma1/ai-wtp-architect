@@ -1,0 +1,58 @@
+{
+  "timestamp": "20260218_114729",
+  "prompt": "100 MLD surface water treatment plant with interconnecting pipelines between all units. Include intake, clarifier, filters, and storage with prominent pipe connections.",
+  "parameters": {
+    "intake": {
+      "radius": 8.0,
+      "height": 6.0,
+      "x": 10
+    },
+    "clarifier": {
+      "radius": 15.0,
+      "height": 8.0,
+      "x": 55
+    },
+    "filter": {
+      "width": 12.0,
+      "depth": 8.0,
+      "height": 6.0,
+      "x": 95
+    },
+    "storage": {
+      "radius": 10.0,
+      "height": 12.0,
+      "x": 135
+    },
+    "pipes": [
+      {
+        "from": "intake",
+        "to": "clarifier",
+        "length": 45.0,
+        "radius": 2.5,
+        "x": 25,
+        "y": 0,
+        "z": 0
+      },
+      {
+        "from": "clarifier",
+        "to": "filter",
+        "length": 40.0,
+        "radius": 3.0,
+        "x": 70,
+        "y": 0,
+        "z": 0
+      },
+      {
+        "from": "filter",
+        "to": "storage",
+        "length": 40.0,
+        "radius": 2.0,
+        "x": 110,
+        "y": 0,
+        "z": 0
+      }
+    ]
+  },
+  "vertices": 260,
+  "triangles": 492
+}
