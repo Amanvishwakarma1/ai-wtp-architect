@@ -3,13 +3,15 @@ import numpy as np
 import trimesh
 from datetime import datetime
 import re
+import tempfile
 
 
 class SimpleCADGenerator:
 
-    def __init__(self, export_dir="exports"):
-        self.export_dir = export_dir
-        os.makedirs(export_dir, exist_ok=True)
+    def __init__(self, export_dir=None):
+        # Render-safe export directory
+        self.export_dir = export_dir or tempfile.gettempdir()
+        os.makedirs(self.export_dir, exist_ok=True)
 
     # ============================================================
     # MAIN BUILD
@@ -33,9 +35,7 @@ class SimpleCADGenerator:
         train_spacing = 400 * scale
         base_x = -((trains - 1) / 2) * train_spacing
 
-        # ============================================================
-        # GROUND
-        # ============================================================
+        # ================= GROUND =================
 
         ground = trimesh.creation.box(
             extents=[train_spacing * trains + 800 * scale,
@@ -46,9 +46,7 @@ class SimpleCADGenerator:
         ground.apply_translation([0, 0, -20])
         scene.add_geometry(ground)
 
-        # ============================================================
-        # MAIN HEADER
-        # ============================================================
+        # ================= MAIN HEADER =================
 
         header_start = base_x - 200 * scale
         header_end = base_x + train_spacing * (trains - 1)
@@ -60,9 +58,7 @@ class SimpleCADGenerator:
         )
         scene.add_geometry(header)
 
-        # ============================================================
-        # STORAGE TANK
-        # ============================================================
+        # ================= STORAGE TANK =================
 
         storage_x = header_end + 350 * scale
         storage_radius = 50 * scale
@@ -73,9 +69,7 @@ class SimpleCADGenerator:
 
         train_outputs = []
 
-        # ============================================================
-        # TREATMENT TRAINS
-        # ============================================================
+        # ================= TREATMENT TRAINS =================
 
         for i in range(trains):
 
@@ -141,9 +135,7 @@ class SimpleCADGenerator:
 
             train_outputs.append([x, -400 * scale, 35 * scale])
 
-        # ============================================================
-        # OUTPUT ROUTING (SAFE FOR SINGLE OR MULTI TRAIN)
-        # ============================================================
+        # ================= OUTPUT ROUTING =================
 
         merge_y = -500 * scale
 
@@ -197,9 +189,7 @@ class SimpleCADGenerator:
                                   branch_pipe,
                                   scale)
 
-        # ============================================================
-        # CENTER & EXPORT
-        # ============================================================
+        # ================= CENTER & EXPORT =================
 
         scene = self.center(scene)
 
@@ -213,7 +203,7 @@ class SimpleCADGenerator:
         return glb_path, stl_path
 
     # ============================================================
-    # STORAGE ROUTING (PROFESSIONAL CONNECTION)
+    # STORAGE ROUTING
     # ============================================================
 
     def route_to_storage(self, scene,
@@ -277,74 +267,42 @@ class SimpleCADGenerator:
         scene.add_geometry(storage_nozzle)
 
     # ============================================================
-    # COMPONENT HELPERS
+    # COMPONENT HELPERS (UNCHANGED)
     # ============================================================
 
     def professional_nozzle(self, x, y, z, radius):
-
-        stub = trimesh.creation.cylinder(
-            radius=radius * 1.05,
-            height=radius * 3,
-            sections=32
-        )
-
-        flange = trimesh.creation.cylinder(
-            radius=radius * 1.8,
-            height=radius * 0.6,
-            sections=32
-        )
+        stub = trimesh.creation.cylinder(radius=radius * 1.05, height=radius * 3, sections=32)
+        flange = trimesh.creation.cylinder(radius=radius * 1.8, height=radius * 0.6, sections=32)
         flange.apply_translation([0, 0, radius * 3])
-
-        neck = trimesh.creation.cylinder(
-            radius=radius * 1.3,
-            height=radius,
-            sections=32
-        )
+        neck = trimesh.creation.cylinder(radius=radius * 1.3, height=radius, sections=32)
         neck.apply_translation([0, 0, radius * 2])
-
         nozzle = trimesh.util.concatenate([stub, neck, flange])
         nozzle.visual.face_colors = [130, 130, 130, 255]
         nozzle.apply_translation([x, y, z])
         return nozzle
 
     def elbow_90(self, position, radius, axis="y"):
-
         elbow = trimesh.creation.torus(
             major_radius=radius * 2.5,
             minor_radius=radius,
             major_sections=32,
             minor_sections=16
         )
-
         elbow.visual.face_colors = [100, 100, 100, 255]
 
         if axis == "y":
-            elbow.apply_transform(
-                trimesh.transformations.rotation_matrix(
-                    np.pi / 2,
-                    [0, 1, 0]
-                )
-            )
-
+            elbow.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 1, 0]))
         if axis == "z":
-            elbow.apply_transform(
-                trimesh.transformations.rotation_matrix(
-                    np.pi / 2,
-                    [0, 0, 1]
-                )
-            )
+            elbow.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 0, 1]))
 
         elbow.apply_translation(position)
         return elbow
 
     def tank(self, x, y, radius, height):
-        body = trimesh.creation.cylinder(radius=radius,
-                                         height=height,
-                                         sections=64)
+        body = trimesh.creation.cylinder(radius=radius, height=height, sections=64)
         body.apply_translation([0, 0, height / 2])
 
-        dome = trimesh.creation.icosphere(subdivisions=2,
-                                          radius=radius)
+        dome = trimesh.creation.icosphere(subdivisions=2, radius=radius)
         dome.vertices[:, 2] = np.maximum(dome.vertices[:, 2], 0)
         dome.apply_translation([0, 0, height])
 
@@ -368,15 +326,10 @@ class SimpleCADGenerator:
         if length < 1e-6:
             return None
 
-        cyl = trimesh.creation.cylinder(radius=radius,
-                                        height=length,
-                                        sections=32)
+        cyl = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
         cyl.apply_translation([0, 0, length / 2])
 
-        rot = trimesh.geometry.align_vectors(
-            [0, 0, 1],
-            direction / length
-        )
+        rot = trimesh.geometry.align_vectors([0, 0, 1], direction / length)
         cyl.apply_transform(rot)
         cyl.apply_translation(start)
         cyl.visual.face_colors = [100, 100, 100, 255]
