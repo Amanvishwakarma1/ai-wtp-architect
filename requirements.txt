@@ -1,3 +1,3 @@
-gradio>=4.0
-trimesh>=4.0
+gradio
+trimesh
 numpy
